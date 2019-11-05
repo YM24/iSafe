@@ -1,0 +1,42 @@
+import * as functions from 'firebase-functions';
+const admin = require('firebase-admin');
+
+admin.initializeApp(functions.config().firebase);
+
+const twilio = require('twilio');
+const accountSid = functions.config().twilio.sid;
+const authToken = functions.config().twilio.token;
+
+console.log(`Twilio account: ${accountSid}`);
+
+const client = new twilio(accountSid, authToken);
+
+const twilioNumber = 'xxx-xxx-xxx';
+
+exports.textStatus = functions.database
+    .ref('/users/{userId}/data/visible')
+    .onUpdate(event => {
+        return admin.database()
+            .ref(`users/{userId}/data/`)
+            .once('value')
+            .then(snapshot => snapshot.val())
+            .then(user=> {
+                console.log(user[0]);
+    
+                const longitude = user.longi;
+                const latitude = user.lati;
+                const phoneNumber = user.phone;
+    
+                const textMessage = {
+                    body: `See user position at Google: http://www.google.com/maps/place/${latitude},${longitude}`,
+                    to: phoneNumber,
+                    from: twilioNumber
+                }
+    
+                return client.messages.create(textMessage);
+    
+    
+            })
+            .then(message => console.log(message.sid, 'success'))
+            .catch(err => console.log(err));
+    });
