@@ -1,0 +1,27 @@
+import "IQAudioRecorderViewController.h"
+
+interface ViewController ()<IQAudioRecorderViewControllerDelegate>
+
+implementation ViewController
+
+- (void)recordAction:(id)sender {
+    IQAudioRecorderViewController *controller = [[IQAudioRecorderViewController alloc] init];
+    controller.delegate = self;
+    controller.title = "Recorder";
+    controller.maximumRecordDuration = 7;
+    controller.allowCropping = YES;
+//    controller.barStyle = UIBarStyleDefault;
+//    controller.normalTintColor = [UIColor magentaColor];
+//    controller.highlightedTintColor = [UIColor orangeColor];
+    [self presentBlurredAudioRecorderViewControllerAnimated:controller];
+}
+
+-(void)audioRecorderController:(IQAudioRecorderViewController *)controller didFinishWithAudioAtPath:(NSString *)filePath {
+    //Do your custom work with file at filePath.
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)audioRecorderControllerDidCancel:(IQAudioRecorderViewController *)controller {
+    //Notifying that user has clicked cancel.
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
