@@ -1,0 +1,42 @@
+import React, { Component } from 'react';
+import {
+  Text,
+  View,
+  Alert,
+} from 'react-native';
+import DoubleClick from 'react-native-double-click';
+ 
+export default class doubleClicker extends Component {
+  constructor() {
+    super();
+ 
+    this.handleClick = this.handleClick.bind(this);
+  }
+ 
+  handleClick() {
+    Alert.alert('I need help \n ');
+  }
+ 
+  render() {
+    return (
+      <View style={{ flex: 1, marginTop: 50 }}>
+        <Text style={{ fontSize: 20 }}>
+          We are here for justice
+        </Text>
+        <DoubleClick onClick={this.handleClick}>
+          <Text style={{ fontSize: 26 }}>
+            Tap twice to report.
+          </Text>
+        </DoubleClick>
+      </View>
+    );
+  }
+}
+<TouchableOpacity
+  accessible={true}
+  accessibilityLabel="Tap me!"
+  onPress={this._onPress}>
+  <View style={styles.button}>
+    <Text style={styles.buttonText}>I need help</Text>
+  </View>
+</TouchableOpacity>
